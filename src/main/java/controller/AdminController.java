@@ -16,12 +16,13 @@ import java.io.InputStream;
 @Controller
 public class AdminController {
 
-    String resource = "mybatis-config.xml";
-    InputStream inputStream = Resources.getResourceAsStream(resource);
-    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-    SqlSession sqlSession = sqlSessionFactory.openSession();
+    private final SqlSessionFactory sqlSessionFactory;
 
     public AdminController() throws IOException {
+        String resource = "mybatis-config.xml";
+        try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
+            this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        }
     }
 
     @RequestMapping("/tologin_admin")
@@ -37,8 +38,10 @@ public class AdminController {
     //注册用户
     @RequestMapping("/Register_admin")
     public String toAdminRegister(Admin admin, Model model, HttpSession session) {
-        sqlSession.insert("mapper.AdminMapper.Register_admin", admin);
-        sqlSession.commit();
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            sqlSession.insert("mapper.AdminMapper.Register_admin", admin);
+            sqlSession.commit();
+        }
         return "redirect:/tologin_admin";
     }
 
@@ -46,8 +49,10 @@ public class AdminController {
     @RequestMapping("/AdminLogin")
     public String AdminLogin(Admin admin, Model model, HttpSession session) {
 
-        Admin a = sqlSession.selectOne("mapper.AdminMapper.FindUser", admin);
-
+        Admin a;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            a = sqlSession.selectOne("mapper.AdminMapper.FindUser", admin);
+        }
         if (a == null) {
             //如果用户名和密码不匹配，转发到登录页面，并进行提醒
             model.addAttribute("msg", "用户名或密码错误，请重新登录！");
@@ -65,8 +70,7 @@ public class AdminController {
     public String logout(HttpSession session) {
         // 清除Session
         session.invalidate();
-//        清除缓存
-        sqlSession.clearCache();
+
         // 退出登录后重定向到登录页面
         return "redirect:tologin_admin";
     }

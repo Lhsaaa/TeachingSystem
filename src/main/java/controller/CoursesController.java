@@ -22,12 +22,13 @@ import java.util.List;
 @Controller
 public class CoursesController {
 
-    String resource = "mybatis-config.xml";
-    InputStream inputStream = Resources.getResourceAsStream(resource);
-    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-    SqlSession sqlSession = sqlSessionFactory.openSession();
+    private final SqlSessionFactory sqlSessionFactory;
 
     public CoursesController() throws IOException {
+        String resource = "mybatis-config.xml";
+        try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
+            this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        }
     }
 
     @RequestMapping("/toCourse")
@@ -39,8 +40,10 @@ public class CoursesController {
     //加载未被删除的课程
     @RequestMapping("/loadCourses")
     public void loadCourses(HttpSession session) {
-        List<Course> courses = sqlSession.selectList("mapper.CourseMapper.SelectCourses");
-        session.setAttribute("CourseList", courses);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            List<Course> courses = sqlSession.selectList("mapper.CourseMapper.SelectCourses");
+            session.setAttribute("CourseList", courses);
+        }
     }
 
     //添加课程
@@ -54,8 +57,10 @@ public class CoursesController {
         course.setOutline(outline);
         course.setTeacher_id(tech_id);
 
-        sqlSession.insert("mapper.CourseMapper.AddCourse", course);
-        sqlSession.commit();
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            sqlSession.insert("mapper.CourseMapper.AddCourse", course);
+            sqlSession.commit();
+        }
 
         return "redirect:/toCourse";  //重定向回课程列表
     }
@@ -63,14 +68,12 @@ public class CoursesController {
     //隐藏课程(教师端删除课程)
     @RequestMapping("hiddenCourse")
     public String hiddenCourse(@RequestParam("CourseId") String CourseID) {
-
-        int CourseId = Integer.parseInt(CourseID);
-        sqlSession.update("mapper.CourseMapper.hiddenCourse", CourseId);
-        sqlSession.commit();
-
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            int CourseId = Integer.parseInt(CourseID);
+            sqlSession.update("mapper.CourseMapper.hiddenCourse", CourseId);
+            sqlSession.commit();
+        }
         return "redirect:/toCourse";  //重定向回课程列表
-
     }
-
 }
 

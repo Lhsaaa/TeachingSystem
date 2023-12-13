@@ -21,12 +21,16 @@ import java.util.List;
 public class TeacherController {
 
 
-    String resource = "mybatis-config.xml";
-    InputStream inputStream = Resources.getResourceAsStream(resource);
-    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-    SqlSession sqlSession = sqlSessionFactory.openSession();
+    private final SqlSessionFactory sqlSessionFactory;
+
 
     public TeacherController() throws IOException {
+
+        String resource = "mybatis-config.xml";
+        try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
+            this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        }
+
     }
 
     @RequestMapping("/main_teacher")
@@ -47,10 +51,12 @@ public class TeacherController {
     //注册
 
     @RequestMapping("Register_teacher")
-    public String Register_teacher(Teacher teacher , Model model, HttpSession session){
+    public String Register_teacher(Teacher teacher, Model model, HttpSession session) {
 
-        sqlSession.insert("mapper.TeacherMapper.Register_teacher",teacher);
-        sqlSession.commit();
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            sqlSession.insert("mapper.TeacherMapper.Register_teacher", teacher);
+            sqlSession.commit();
+        }
 
         return "redirect:/tologin_teacher";
 
@@ -66,8 +72,10 @@ public class TeacherController {
 
         // 从数据库中获取用户名和密码后进行判断
         if (ID != null && Password != null) {
-            Teacher teacher = sqlSession.selectOne("mapper.TeacherMapper.FindOneTeacherByID", ID);
-
+            Teacher teacher;
+            try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+                teacher = sqlSession.selectOne("mapper.TeacherMapper.FindOneTeacherByID", ID);
+            }
             if (teacher == null) {
                 //如果用户名和密码不匹配，转发到登录页面，并进行提醒
                 model.addAttribute("msg", "用户名或密码错误，请重新登录！");
@@ -85,10 +93,10 @@ public class TeacherController {
     //用户退出
     @RequestMapping("/logout_teacher")
     public String logout(HttpSession session) {
+
         // 清除Session
         session.invalidate();
-        //清除Cache
-        sqlSession.clearCache();
+
         // 退出登录后重定向到登录页面
         return "redirect:login_teacher";
     }
@@ -103,15 +111,23 @@ public class TeacherController {
     //加载学生留言板列表
     @RequestMapping("/loadTeacherList")
     public void loadMessageList(Model model, HttpSession session) throws Exception {
-        sqlSession.commit();
-        List<Message> messages = sqlSession.selectList("mapper.MessageMapper.SelectMessages");
+        List<Message> messages;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            messages = sqlSession.selectList("mapper.MessageMapper.SelectMessages");
+        }
         //联合其他表来补充留言表中所需的内容
         for (Message message : messages) {
-            Student stu = sqlSession.selectOne("mapper.StudentMapper.FindStudentByID", message.getStu_id());
+            Student stu;
+            try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+                stu = sqlSession.selectOne("mapper.StudentMapper.FindStudentByID", message.getStu_id());
+            }
             message.setStu_name(stu.getName());
             message.setStu_class(stu.getStu_class());
             if (message.getTeacher_id() != null) {
-                Teacher teacher = sqlSession.selectOne("mapper.TeacherMapper.FindTeacherByID", message.getTeacher_id());
+                Teacher teacher;
+                try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+                    teacher = sqlSession.selectOne("mapper.TeacherMapper.FindTeacherByID", message.getTeacher_id());
+                }
                 message.setTeacher_name(teacher.getTech_name());
                 message.setTeacher_email(teacher.getTeacher_Mail());
             }
@@ -128,8 +144,10 @@ public class TeacherController {
         message.setId(Integer.parseInt(messageId));
         message.setAns(replyContent);
         message.setTeacher_id(UserID);
-        sqlSession.update("mapper.MessageMapper.Reply", message);
-        sqlSession.commit();
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            sqlSession.update("mapper.MessageMapper.Reply", message);
+            sqlSession.commit();
+        }
 
         //重新加载留言列表
         loadMessageList(model, session);
