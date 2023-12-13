@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mapper.TeacherMapper">
+    <!--    注册教师-->
+    <insert id="Register_teacher" parameterType="Teacher">
+        insert into teachers
+        values (#{tech_ID}, #{tech_name}, #{tech_pwd}, #{teacher_Mail});
+    </insert>
+    <!--    根据教师ID来查询教师信息-->
+    <select id="FindTeacherByID" parameterType="String" resultType="Teacher">
+        select *
+        from teachers
+        where #{message.getTeacher_id()} = tech_ID;
+    </select>
+
+    <!--    登录检验-->
+    <select id="FindOneTeacherByID" parameterType="String" resultType="Teacher">
+        select *
+        from teachers
+        where #{ID} = tech_ID;
+    </select>
+
+</mapper>

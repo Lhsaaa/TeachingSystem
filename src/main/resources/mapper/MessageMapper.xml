@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mapper.MessageMapper">
+    <!--查询所有的留言 -->
+    <select id="SelectMessages" resultType="Message">
+        select *
+        from messages;
+    </select>
+
+    <!--    添加留言-->
+    <insert id="AddMessage" parameterType="Message">
+        insert into messages(stu_id, content)
+        values (#{stu_id}, #{content})
+    </insert>
+
+    <!--    回复留言-->
+    <update id="Reply" parameterType="Message">
+        update messages
+        set ans        = #{ans},
+            teacher_id = #{teacher_id}
+        where id = #{id};
+    </update>
+
+</mapper>

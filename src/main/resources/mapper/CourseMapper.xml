@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mapper.CourseMapper">
+    <!--    查询未被删除的课程课程-->
+    <select id="SelectCourses" resultType="Course">
+        select *
+        from courses
+        where deleted = 0;
+    </select>
+
+    <!--    新增课程 -->
+    <insert id="AddCourse" parameterType="Course">
+        insert into courses(name, description, outline, teacher_id)
+        values (#{name}, #{description}, #{outline}, #{teacher_id});
+    </insert>
+
+    <!--    隐藏课程(教师端删除课程)-->
+    <update id="hiddenCourse" parameterType="int">
+        update courses
+        set deleted=1
+        where id = #{CourseId}
+    </update>
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mapper.AdminMapper">
+
+    <!--    注册新用户-->
+    <insert id="Register_admin" parameterType="Admin">
+        insert into admins values (#{admin_ID}, #{admin_name}, #{admin_pwd});
+    </insert>
+
+    <!--查找是否有登录的该用户 -->
+    <select id="FindUser" parameterType="Admin" resultType="Admin">
+        select *
+        from admins
+        where #{admin_ID} = admin_ID;
+    </select>
+
+    <!--    根据学生id来查询学生信息-->
+    <select id="FindStudentByID" parameterType="String" resultType="Student">
+        select *
+        from students
+        where #{message.getStu_id())} = stu_ID;
+    </select>
+
+</mapper>
