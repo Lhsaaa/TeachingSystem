@@ -31,6 +31,12 @@ public class CoursesController {
         }
     }
 
+    @RequestMapping("/toCourse_admin")
+    public String toCourses_admin(HttpSession session) {
+        loadAllCourses(session);
+        return "Courses";
+    }
+
     @RequestMapping("/toCourse")
     public String toCourses(HttpSession session) {
         loadCourses(session);
@@ -42,6 +48,15 @@ public class CoursesController {
     public void loadCourses(HttpSession session) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             List<Course> courses = sqlSession.selectList("mapper.CourseMapper.SelectCourses");
+            session.setAttribute("CourseList", courses);
+        }
+    }
+
+    //加载所有的课程
+    @RequestMapping("/loadAllCourses")
+    public void loadAllCourses(HttpSession session) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            List<Course> courses = sqlSession.selectList("mapper.CourseMapper.AllCourses");
             session.setAttribute("CourseList", courses);
         }
     }
@@ -66,14 +81,42 @@ public class CoursesController {
     }
 
     //隐藏课程(教师端删除课程)
-    @RequestMapping("hiddenCourse")
-    public String hiddenCourse(@RequestParam("CourseId") String CourseID) {
+    @RequestMapping("/hiddenCourse")
+    public String hiddenCourse(@RequestParam("CourseId") String CourseID, HttpSession session) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             int CourseId = Integer.parseInt(CourseID);
             sqlSession.update("mapper.CourseMapper.hiddenCourse", CourseId);
             sqlSession.commit();
         }
+
+        if (session.getAttribute("IsAdmin") != null && (Boolean) session.getAttribute("IsAdmin")) {
+            return "redirect:/toCourse_admin";  //重定向回课程列表
+        }
+
         return "redirect:/toCourse";  //重定向回课程列表
     }
+
+    //显示课程
+    @RequestMapping("/releaseCourse")
+    public String releaseCourse(@RequestParam("CourseId") String CourseID) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            int CourseId = Integer.parseInt(CourseID);
+            sqlSession.update("mapper.CourseMapper.releaseCourse", CourseId);
+            sqlSession.commit();
+        }
+        return "redirect:/toCourse_admin";  //重定向回课程列表
+    }
+
+    //删除课程
+    @RequestMapping("/deleteCourse")
+    public String deleteCourse(@RequestParam("CourseId") String CourseID) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            int CourseId = Integer.parseInt(CourseID);
+            sqlSession.update("mapper.CourseMapper.deleteCourse", CourseId);
+            sqlSession.commit();
+        }
+        return "redirect:/toCourse_admin";  //重定向回课程列表
+    }
+
 }
 

@@ -3,12 +3,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="mapper.CourseMapper">
-    <!--    查询未被删除的课程课程-->
+    <!--    查询未被删除的课程-->
     <select id="SelectCourses" resultType="Course">
         select *
         from courses
         where deleted = 0;
     </select>
+
+    <!--    查询所有的课程-->
+    <select id="AllCourses" resultType="Course">
+        select *
+        from courses;
+    </select>
+
 
     <!--    新增课程 -->
     <insert id="AddCourse" parameterType="Course">
@@ -23,4 +30,18 @@
         where id = #{CourseId}
     </update>
 
+    <!--    发布课程-->
+    <update id="releaseCourse" parameterType="int">
+        update courses
+        set deleted =0
+        where id = #{CourseId}
+    </update>
+
+
+    <!--    删除课程-->
+    <update id="deleteCourse" parameterType="int">
+        delete
+        from courses
+        where id = #{CourseId}
+    </update>
 </mapper>

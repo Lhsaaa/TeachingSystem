@@ -336,6 +336,8 @@
 
             <c:if test="${IsAdmin}">
                 <th>状态</th>
+                <th>操作</th>
+                <th>删除</th>
             </c:if>
 
 
@@ -352,7 +354,7 @@
                 </td>
                 <c:if test="${IsTeacher}">
                     <td>
-                        <form action="${pageContext.request.contextPath}\hiddenCourse" method="post">
+                        <form action="${pageContext.request.contextPath}/hiddenCourse" method="post">
                             <input type="hidden" name="CourseId" value="${course.id}">
 
                             <input type="submit" value="删除" class="course-button">
@@ -367,8 +369,24 @@
                     <c:if test="${course.deleted==0}">
                         <td>已发布</td>
                     </c:if>
-                </c:if>
+                    <td>
+                        <form action="${pageContext.request.contextPath}/hiddenCourse" method="post">
+                            <input type="hidden" name="CourseId" value="${course.id}">
+                            <input type="submit" value="隐藏" class="course-button">
+                        </form>
 
+                        <form action="${pageContext.request.contextPath}/releaseCourse">
+                            <input type="hidden" name="CourseId" value="${course.id}">
+                            <input type="submit" value="发布" class="course-button">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="${pageContext.request.contextPath}/deleteCourse">
+                            <input type="hidden" name="CourseId" value="${course.id}">
+                            <input type="submit" value="删除" class="course-button">
+                        </form>
+                    </td>
+                </c:if>
             </tr>
         </c:forEach>
     </table>
