@@ -45,6 +45,11 @@ public class AdminController {
         return "redirect:/tologin_admin";
     }
 
+    @RequestMapping("/main_admin")
+    public String toMain_admin() {
+        return "AdminMain";
+    }
+
     //验证登录合法性
     @RequestMapping("/AdminLogin")
     public String AdminLogin(Admin admin, Model model, HttpSession session) {
@@ -59,6 +64,7 @@ public class AdminController {
             return "AdminLogin";
         } else if (a.getAdmin_ID().equals(admin.getAdmin_ID()) && a.getAdmin_pwd().equals(admin.getAdmin_pwd())) {
             session.setAttribute("user", a);
+            session.setAttribute("IsAdmin", true);
             //用户登录成功，转发到系统首页
             return "AdminMain";
         }

@@ -76,6 +76,7 @@ public class StudentController {
                     return "StudentLogin";
                 } else if (u.getID().equals(ID) && u.getPassword().equals(Password)) {
                     session.setAttribute("user", u);
+                    session.setAttribute("IsStudent",true);
                     //用户登录成功，转发到系统首页
                     return "StudentMain";
                 }
@@ -125,7 +126,6 @@ public class StudentController {
                     message.setTeacher_name(teacher.getTech_name());
                     message.setTeacher_email(teacher.getTeacher_Mail());
                     message.setTeacher_id(message.getTeacher_id());
-                    System.out.println(message.getTeacher_id());
                 }
             }
 

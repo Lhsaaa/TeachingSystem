@@ -82,6 +82,7 @@ public class TeacherController {
                 return "TeacherLogin";
             } else if (teacher.getTech_ID().equals(ID) && teacher.getTech_pwd().equals(Password)) {
                 session.setAttribute("user", teacher);
+                session.setAttribute("IsTeacher",true);
                 //用户登录成功，转发到系统首页
                 return "TeacherMain";
             }
@@ -153,14 +154,6 @@ public class TeacherController {
         loadMessageList(model, session);
 
         return "TeacherBoard";
-    }
-
-    //去往课程管理
-    @RequestMapping("/toCourses")
-    public String toCourses(HttpSession session) {
-        boolean IsAdmin = true;
-        session.setAttribute("flag", IsAdmin);
-        return "Courses";
     }
 
 }

@@ -18,7 +18,7 @@
     <style>
         /* 模态框样式 */
         body {
-            background-image: url("image/bg3.png");
+            background-image: url("images/bg3.png");
             background-size: cover;
         }
 
@@ -177,14 +177,57 @@
             background-color: #e0e0e0; /* 鼠标悬停时的背景颜色 */
         }
 
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
         .modal-content {
             margin: 15% auto;
             padding: 20px;
-            border: none; /* 去掉边框 */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
-            background-color: white; /* 模态框背景颜色 */
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
             width: 70%;
+            border-radius: 10px;
         }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover, .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 新增样式，使模态框内容适应宽度 */
+        .modal-content p {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* 新增样式，调整模态框标题样式 */
+        .modal-content h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+
     </style>
 
     <script>
@@ -253,10 +296,11 @@
     sans-serif;font-size: 70px;font-weight: 400">课程查看</h1>
 
 
-<h2 style="color: #FFFFFF;font-family:Microsoft YaHei, sans-serif;font-weight: 300">发布课程</h2>
-<hr>
 <div class="button-container">
-    <c:if test="${flag}">
+
+    <c:if test="${IsTeacher}">
+        <h2 style="color: #FFFFFF;font-family:Microsoft YaHei, sans-serif;font-weight: 300">发布课程</h2>
+        <hr>
         <form action="${pageContext.request.contextPath}/addCourse" method="post">
             <label style="color: #FFFFFF">
                 课程名称：
@@ -286,7 +330,15 @@
             <th>发布教师</th>
             <th>发布时间</th>
             <th>查看</th>
-            <th>删除</th>
+            <c:if test="${IsTeacher}">
+                <th>删除</th>
+            </c:if>
+
+            <c:if test="${IsAdmin}">
+                <th>状态</th>
+            </c:if>
+
+
         </tr>
         <c:forEach var="course" items="${CourseList}">
             <tr>
@@ -298,12 +350,25 @@
                     <button class="course-button" onclick="showCourseIntro('${course.description}')">课程介绍</button>
                     <button class="course-button" onclick="showCourseOutline('${course.outline}')">课程大纲</button>
                 </td>
-                <td>
-                    <form action="${pageContext.request.contextPath}\hiddenCourse" method="post">
-                        <input type="hidden" name="CourseId" value="${course.id}">
-                        <input type="submit" value="删除" class="course-button">
-                    </form>
-                </td>
+                <c:if test="${IsTeacher}">
+                    <td>
+                        <form action="${pageContext.request.contextPath}\hiddenCourse" method="post">
+                            <input type="hidden" name="CourseId" value="${course.id}">
+
+                            <input type="submit" value="删除" class="course-button">
+                        </form>
+                    </td>
+                </c:if>
+
+                <c:if test="${IsAdmin}">
+                    <c:if test="${course.deleted==1}">
+                        <td>已隐藏</td>
+                    </c:if>
+                    <c:if test="${course.deleted==0}">
+                        <td>已发布</td>
+                    </c:if>
+                </c:if>
+
             </tr>
         </c:forEach>
     </table>
@@ -329,9 +394,21 @@
     </div>
 </div>
 
+<c:if test="${IsTeacher}">
+    <a class="back-button" href="${pageContext.request.contextPath}/main_teacher">返回主界面</a>
+    <a href="${ pageContext.request.contextPath }/logout_teacher" class="logout-button">退出登录</a>
+</c:if>
 
-<a class="back-button" href="${pageContext.request.contextPath}/main_teacher">返回主界面</a>
-<a href="${ pageContext.request.contextPath }/logout_teacher" class="logout-button">退出登录</a>
+
+<c:if test="${IsAdmin}">
+    <a class="back-button" href="${pageContext.request.contextPath}/main_admin">返回主界面</a>
+    <a href="${ pageContext.request.contextPath }/logout_admin" class="logout-button">退出登录</a>
+</c:if>
+
+<c:if test="${IsStudent}">
+    <a class="back-button" href="${pageContext.request.contextPath}/main_stu">返回主界面</a>
+    <a href="${ pageContext.request.contextPath }/logout_stu" class="logout-button">退出登录</a>
+</c:if>
 
 
 </body>

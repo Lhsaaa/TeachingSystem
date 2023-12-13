@@ -32,7 +32,7 @@ public class CoursesController {
     }
 
     @RequestMapping("/toCourse")
-    public String toCourse(HttpSession session) {
+    public String toCourses(HttpSession session) {
         loadCourses(session);
         return "Courses";
     }
