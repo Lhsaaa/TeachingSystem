@@ -48,6 +48,10 @@ public class CoursesController {
     public void loadCourses(HttpSession session) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             List<Course> courses = sqlSession.selectList("mapper.CourseMapper.SelectCourses");
+            for (Course course : courses) {
+                course.setTeacher_name((String) sqlSession.selectOne
+                        ("mapper.CourseMapper.FindCourseTeacher", course.getTeacher_id()));
+            }
             session.setAttribute("CourseList", courses);
         }
     }
@@ -57,6 +61,10 @@ public class CoursesController {
     public void loadAllCourses(HttpSession session) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             List<Course> courses = sqlSession.selectList("mapper.CourseMapper.AllCourses");
+            for (Course course : courses) {
+                course.setTeacher_name((String) sqlSession.selectOne
+                        ("mapper.CourseMapper.FindCourseTeacher", course.getTeacher_id()));
+            }
             session.setAttribute("CourseList", courses);
         }
     }

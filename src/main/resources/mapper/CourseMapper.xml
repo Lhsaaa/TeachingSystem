@@ -23,6 +23,12 @@
         values (#{name}, #{description}, #{outline}, #{teacher_id});
     </insert>
 
+    <!--    查询任课老师姓名-->
+    <select id="FindCourseTeacher" parameterType="String" resultType="String">
+        select tech_name
+        from teachers
+        where tech_ID = #{teacher_id};
+    </select>
     <!--    隐藏课程(教师端删除课程)-->
     <update id="hiddenCourse" parameterType="int">
         update courses

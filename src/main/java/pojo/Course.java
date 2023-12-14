@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 public class Course {
     private int id, deleted;
-    private String name, description, outline, teacher_id;
+    private String name, description, outline, teacher_id, teacher_name;
     private Timestamp publish_time;
 
     public Course() {
@@ -40,6 +40,10 @@ public class Course {
         return deleted;
     }
 
+    public String getTeacher_name() {
+        return teacher_name;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -66,5 +70,9 @@ public class Course {
 
     public void setDeleted(int deleted) {
         this.deleted = deleted;
+    }
+
+    public void setTeacher_name(String teacher_name) {
+        this.teacher_name = teacher_name;
     }
 }

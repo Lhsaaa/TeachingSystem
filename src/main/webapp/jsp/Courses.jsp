@@ -346,7 +346,7 @@
             <tr>
                 <td>${course.id}</td>
                 <td>${course.name}</td>
-                <td>${course.teacher_id}</td>
+                <td>${course.teacher_name}</td>
                 <td><fmt:formatDate value="${course.publish_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td>
                     <button class="course-button" onclick="showCourseIntro('${course.description}')">课程介绍</button>
