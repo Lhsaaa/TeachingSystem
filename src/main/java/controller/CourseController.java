@@ -5,14 +5,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pojo.Course;
-import pojo.Message;
-import pojo.Student;
-import pojo.Teacher;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -20,11 +15,11 @@ import java.io.InputStream;
 import java.util.List;
 
 @Controller
-public class CoursesController {
+public class CourseController {
 
     private final SqlSessionFactory sqlSessionFactory;
 
-    public CoursesController() throws IOException {
+    public CourseController() throws IOException {
         String resource = "mybatis-config.xml";
         try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
             this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);

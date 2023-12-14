@@ -2,10 +2,9 @@
   Created by IntelliJ IDEA.
   User: singer
   Date: 2023/12/14
-  Time: 12:52
+  Time: 23:20
   To change this template use File | Settings | File Templates.
 --%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -16,11 +15,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>课程章节和课件查看</title>
+    <title>章节查看
+    </title>
     <style>
         body {
-            background-image: url("images/bg4.png");
-            background-size: 100%;
+            background-image: url("images/bg5.png");
+            background-size: cover;
         }
 
         .Page_title {
@@ -34,12 +34,6 @@
             font-weight: 500;
         }
 
-        .CourseInfo {
-            font-family: "微软雅黑", sans-serif;
-            font-size: 20px;
-            color: #c4BFBF;
-            font-weight: 300;
-        }
 
         .logout-button {
             background-color: #e2353e;
@@ -82,7 +76,7 @@
         }
 
 
-        .BackToCourse-button {
+        .BackToChapter-button {
             background-color: #3498db;
             color: white;
             font-size: 20px;
@@ -98,64 +92,42 @@
             right: 115px;
         }
 
-        .BackToCourse-button:hover {
+        .BackToChapter-button:hover {
             background-color: #2980b9;
         }
 
-
-        .chapter-table {
+        .material-table {
             width: 80%;
             margin: 0 auto;
             border-collapse: collapse;
             font-family: "微软雅黑", sans-serif;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .chapter-table th, .chapter-table td {
+        .material-table th, .material-table td {
             padding: 10px;
             border: 1px solid #ddd;
             text-align: center;
         }
 
-        .chapter-table th {
-            background-color: #f2f2f2;
-        }
-
-        .chapter-table tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .chapter-table {
-            width: 80%;
-            margin: 0 auto;
-            border-collapse: collapse;
-            font-family: "微软雅黑", sans-serif;
-            backdrop-filter: blur(10px); /* 添加背景模糊效果 */
-            background-color: rgba(255, 255, 255, 0.2); /* 添加半透明背景颜色 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
-        }
-
-        .chapter-table th, .chapter-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-
-        .chapter-table th {
+        .material-table th {
             background-color: #f2f2f2;
             font-weight: bold;
         }
 
-        .chapter-table tr:hover {
+        .material-table tr:hover {
             background-color: #f5f5f5;
         }
 
-        /* 添加阴影效果 */
-        .chapter-table {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .MaterialsList {
+            margin-left: 200px;
         }
 
-        /* 美化查看课件按钮 */
-        .chapter-table button[type="submit"] {
+
+        /* 美化查看按钮 */
+        .material-table button[type="submit"] {
             background-color: #3498db; /* 修改按钮背景颜色 */
             color: white;
             font-size: 16px;
@@ -167,67 +139,65 @@
         }
 
         /* 悬停时的样式 */
-        .chapter-table button[type="submit"]:hover {
+        .material-table button[type="submit"]:hover {
             background-color: #2980b9; /* 悬停时的背景颜色 */
         }
 
 
     </style>
 </head>
+
+
 <body>
 
-<h1 class="Page_title">课程章节与课件查看</h1>
 
+<h1 class="Page_title">${chapter.chapter_title} 章节课件查看</h1>
 
-<h2 style="color:#c4BFBF">课程信息</h2>
-<p class="CourseInfo">课程名称: ${course.name}
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 发布教师: ${course.teacher_name}
-</p>
+<h1>所属课程: ${chapter.course_id}
+</h1>
 <hr>
-
-<c:if test="${empty chapters}">
-    <h2>暂无章节</h2>
+<br>
+<!-- 显示课件列表 -->
+<h2 class="MaterialsList">课件列表</h2>
+<c:if test="${ empty materials}">
+    <p>暂无课件</p>
 </c:if>
 
-<c:if test="${not empty chapters}">
-    <h2>章节列表</h2>
-    <table class="chapter-table">
+<c:if test="${not empty materials}">
+    <table class="material-table">
         <tr>
-            <th>章节标题</th>
-            <th>查看课件</th>
+            <th>课件标题</th>
+            <th>上传教师</th>
+            <th>上传时间</th>
+            <th>操作</th>
         </tr>
-        <c:forEach var="chapter" items="${chapters}">
+        <c:forEach var="material" items="${materials}">
             <tr>
-                <td>${chapter.chapter_title}
+                <td>${material.material}
                 </td>
                 <td>
-                    <form action="${pageContext.request.contextPath}/toMaterial" method="post">
-                        <input type="hidden" name="chapterId" value="${chapter.id}">
-                        <button type="submit" name="editButton">查看</button>
+                    ${material.course_id}
+                </td>
+
+                <td>${material.upload_time}
+                </td>
+
+                <td>
+                    <form action="fileServlet" method="get" target="_blank">
+                        <input type="hidden" name="filePath"
+                               value="<%= URLEncoder.encode(material.getFilePath(), "UTF-8") %>">
+                        <button type="submit">查看</button>
                     </form>
                 </td>
             </tr>
         </c:forEach>
     </table>
-</c:if>>
-
-
-<c:if test="${IsTeacher}">
-    <a class="back-button" href="${pageContext.request.contextPath}/main_teacher">返回主界面</a>
-    <a href="${ pageContext.request.contextPath }/logout_teacher" class="logout-button">退出登录</a>
 </c:if>
 
+<a class="back-button" href="main_stu.jsp">返回主界面</a>
+<a class="logout-button" href="login_stu.jsp">退出登录</a>
 
-<c:if test="${IsAdmin}">
-    <a class="back-button" href="${pageContext.request.contextPath}/main_admin">返回主界面</a>
-    <a href="${ pageContext.request.contextPath }/logout_admin" class="logout-button">退出登录</a>
-</c:if>
+<a class="BackToChapter-button" href="Chapter_stu.jsp?courseId=<%=courseId%>">返回章节列表</a>
 
-<c:if test="${IsStudent}">
-    <a class="back-button" href="${pageContext.request.contextPath}/main_stu">返回主界面</a>
-    <a href="${ pageContext.request.contextPath }/logout_stu" class="logout-button">退出登录</a>
-</c:if>
-
-<a class="BackToCourse-button" href="${pageContext.request.contextPath}/toCourseToChapter">返回课程列表</a>
 </body>
 </html>

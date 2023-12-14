@@ -45,4 +45,11 @@
         where chapter_id = #{ChapterId};
     </select>
 
+    <!--    查询章节信息-->
+    <select id="FindChapterByChapterId" parameterType="int" resultType="Chapter">
+        select *
+        from chapters
+        where chapter_id = #{chapterId};
+    </select>
+
 </mapper>
