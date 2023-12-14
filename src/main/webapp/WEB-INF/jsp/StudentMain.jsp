@@ -14,7 +14,7 @@
 
     <style>
         body {
-            background: url("image/bg3.png") no-repeat;
+            background: url("images/bg3.png") no-repeat;
             background-size: cover;
         }
 

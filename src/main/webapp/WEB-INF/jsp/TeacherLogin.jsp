@@ -1,14 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
   User: singer
-  Date: 2023/12/11
-  Time: 22:57
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: singer
   Date: 2023/12/10
   Time: 13:03
   To change this template use File | Settings | File Templates.
@@ -18,7 +10,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>管理员登录</title>
+    <title>教师登录</title>
     <style>
         * {
             margin: 0;
@@ -31,7 +23,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url("image/08.jpg") no-repeat;
+            background: url("images/08.jpg") no-repeat;
             background-size: cover;
         }
 
@@ -159,25 +151,24 @@
 
 <body>
 <div class="box">
-    <h1>管理员登录</h1>
-    <br/>
-    <form action="${pageContext.request.contextPath }/AdminLogin" method="POST">
+    <h1>教师登录</h1>
+    <br />
+    <form action="${pageContext.request.contextPath }/login_teacher" method="POST">
         <div>${msg}</div>
         <div class="input-box">
             <label style="font-size: 25px">账号:</label>
-            <input name="admin_ID" type="text"/>
+            <input name="tech_ID" type="text"/>
         </div>
         <div class="input-box">
             <label style="font-size: 25px">密码:</label>
-            <input name="admin_pwd" type="password"/>
+            <input name="tech_pwd" type="password"/>
         </div>
-
         <div class="button-container">
             <input style="font-size: 25px" type="submit" value="登录"/>
         </div>
     </form>
     <button class="register-button" style="font-size: 25px"
-            onclick="window.location.href='${pageContext.request.contextPath}/toAdminRegister'">
+            onclick="window.location.href='${pageContext.request.contextPath}/toRegister_teacher'">
         注册
     </button>
 </div>

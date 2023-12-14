@@ -1,11 +1,16 @@
 package controller;
 
+import com.mysql.cj.util.DnsSrv;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import pojo.Chapter;
 import pojo.Course;
 
 import javax.servlet.http.HttpSession;
@@ -47,17 +52,28 @@ public class ChapterController {
         session.setAttribute("courses", courses);
     }
 
-    @RequestMapping("/loadAllCourse")
-    public void loadAllCourse(HttpSession session) {
-        List<Course> courses;
-        try (SqlSession sqlsession = sqlSessionFactory.openSession()) {
-            courses = sqlsession.selectList("mapper.ChapterMapper.loadCourses");
-            for (Course course : courses) {
-                course.setTeacher_name(sqlsession.<String>selectOne
-                        ("mapper.CourseMapper.FindCourseTeacher", course.getTeacher_id()));
-            }
+    @GetMapping("/Chapter")
+    public String Chapter(@RequestParam("courseId") String courseId, HttpSession session) {
+
+        int CourseId = Integer.parseInt(courseId);
+        List<Chapter> chapters;
+        Course course;
+
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            chapters = sqlSession.selectList("mapper.ChapterMapper.ChapterInfo", CourseId);
+            course = sqlSession.selectOne("mapper.ChapterMapper.CourseInfo", CourseId);
+            course.setTeacher_name(sqlSession.<String>selectOne
+                    ("mapper.CourseMapper.FindCourseTeacher", course.getTeacher_id()));
+            session.setAttribute("chapters", chapters);
+            session.setAttribute("course", course);
         }
-        session.setAttribute("courses", courses);
+
+        return "redirect:toChapter"; //重定向回章节列表
+    }
+
+    @RequestMapping("/toChapter")
+    public String toChapter() {
+        return "Chapter";
     }
 
 }

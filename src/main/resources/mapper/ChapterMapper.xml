@@ -24,5 +24,25 @@
         where tech_ID = #{teacher_id};
     </select>
 
+    <!--    查询课程相关信息-->
+    <select id="CourseInfo" parameterType="int" resultType="Course">
+        select *
+        from courses
+        where id = #{CourseId}
+    </select>
+
+    <!--    查询章节信息-->
+    <select id="ChapterInfo" parameterType="int" resultType="Chapter">
+        select *
+        from chapters
+        where course_id = #{CourseId};
+    </select>
+
+    <!--    查询章节课件-->
+    <select id="materials" parameterType="int" resultType="Material">
+        select *
+        from coursematerials
+        where chapter_id = #{ChapterId};
+    </select>
 
 </mapper>

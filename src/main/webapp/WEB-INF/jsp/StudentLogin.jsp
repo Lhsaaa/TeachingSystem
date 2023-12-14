@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>教师登录</title>
+    <title>学生登录</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url("image/08.jpg") no-repeat;
+            background: url("images/08.jpg") no-repeat;
             background-size: cover;
         }
 
@@ -151,24 +151,25 @@
 
 <body>
 <div class="box">
-    <h1>教师登录</h1>
-    <br />
-    <form action="${pageContext.request.contextPath }/login_teacher" method="POST">
+    <h1>学生登录</h1>
+    <br/>
+    <form action="${pageContext.request.contextPath }/login_stu" method="POST">
         <div>${msg}</div>
         <div class="input-box">
             <label style="font-size: 25px">账号:</label>
-            <input name="tech_ID" type="text"/>
+            <input name="ID" type="text"/>
         </div>
         <div class="input-box">
             <label style="font-size: 25px">密码:</label>
-            <input name="tech_pwd" type="password"/>
+            <input name="password" type="password"/>
         </div>
+
         <div class="button-container">
             <input style="font-size: 25px" type="submit" value="登录"/>
         </div>
     </form>
     <button class="register-button" style="font-size: 25px"
-            onclick="window.location.href='${pageContext.request.contextPath}/toRegister_teacher'">
+            onclick="window.location.href='${pageContext.request.contextPath}/toRegister_stu'">
         注册
     </button>
 </div>

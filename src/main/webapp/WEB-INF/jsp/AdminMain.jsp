@@ -1,20 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: singer
-  Date: 2023/12/10
-  Time: 13:08
+  Date: 2023/12/11
+  Time: 23:08
   To change this template use File | Settings | File Templates.
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
-    <title>教师主页</title>
+    <title>管理员主页</title>
     <script src="${ pageContext.request.contextPath }/js/jquery-3.6.0.js" type="text/javascript"></script>
 
     <style>
         body {
-            background: url("image/bg3.png") no-repeat;
+            background: url("images/bg3.png") no-repeat;
             background-size: cover;
         }
 
@@ -165,40 +165,34 @@
 
 <body>
 
-<p class="welcome-title">欢迎进入网上教学系统教师端</p>
+<p class="welcome-title">欢迎进入网上教学系统管理员端</p>
 <hr>
-<h2>亲爱的 ${user.tech_name} 以下是您的个人信息：</h2>
+<h2>亲爱的 ${user.admin_name} 以下是您的个人信息：</h2>
 
 <div class="container">
     <table border="1">
         <tr>
             <td>工号:</td>
-            <td>${user.tech_ID}
+            <td>${user.admin_ID}
             </td>
         </tr>
         <tr>
             <td>密码:</td>
-            <td>${user.tech_pwd}
+            <td>${user.admin_pwd}
             </td>
         </tr>
 
         <tr>
             <td>姓名:</td>
-            <td>${user.tech_name}
-            </td>
-        </tr>
-
-        <tr>
-            <td>邮箱:</td>
-            <td>${user.teacher_Mail}
+            <td>${user.admin_name}
             </td>
         </tr>
     </table>
 
     <div class="link-container">
-        <a href="${pageContext.request.contextPath}/toMessage_teacher" class="model-button">去往留言板</a>
-        <a href="${pageContext.request.contextPath}/toCourse" class="model-button">查看课程介绍</a>
-        <%--        <a href="CourseToChapter_stu.jsp" class="model-button">章节课件查看</a>--%>
+        <a href="${pageContext.request.contextPath}/toMessage_admin" class="model-button">去往留言板</a>
+        <a href="${pageContext.request.contextPath}/toCourse_admin" class="model-button">查看课程介绍</a>
+        <a href="${pageContext.request.contextPath}/toCourseToChapter" class="model-button">分章节查看课件</a>
         <%--        <a href="Question.jsp" class="model-button">模拟答题</a>--%>
     </div>
 </div>
@@ -211,8 +205,9 @@
 <%--    </form>--%>
 <%--</div>--%>
 
-<a href="${ pageContext.request.contextPath }/logout_teacher" class="logout-button">退出登录</a>
+<a href="${ pageContext.request.contextPath }/logout_admin" class="logout-button">退出登录</a>
 
 </body>
 
 </html>
+

@@ -17,7 +17,7 @@
     <title>教学课件查看</title>
     <style>
         body {
-            background: url("image/07.jpg") no-repeat;
+            background: url("images/07.jpg") no-repeat;
             background-size: cover;
         }
 
@@ -146,53 +146,73 @@
 <h2 class="table-title">· 课程列表</h2>
 <hr>
 <c:if test="${not empty courses}">
-<div class="container">
-    <div class="table-container">
-        <table class="course-table">
-            <tr>
-                <th>课程ID</th>
-                <th>课程名称</th>
-                <th>任课老师</th>
-                <th>查看课件</th>
-            </tr>
-
-            <c:forEach var="course" items="${courses}">
-
+    <div class="container">
+        <div class="table-container">
+            <table class="course-table">
                 <tr>
-                    <td>${course.id}
-                    </td>
-                    <td>${course.name}
-                    </td>
-                    <td>${course.teacher_name}
-                    </td>
-                    <td>
-                        <c:if test="${IsStudent}">
-                            <form action="toChapter_stu" method="get">
-                                <input type="hidden" name="courseId" value="  ">
-                                <button class="course-button" type="submit">查看
-                                </button>
-                            </form>
-                        </c:if>
+                    <th>课程ID</th>
+                    <th>课程名称</th>
+                    <th>任课老师</th>
+                    <c:if test="${IsStudent}">
+                        <th>查看课件</th>
+                    </c:if>
 
-                        <c:if test="${IsAdmin||IsTeacher}">
-                            <form action="toChapter_admin" method="get">
-                                <input type="hidden" name="courseId" value="  ">
-                                <button class="course-button" type="submit">查看
-                                </button>
-                            </form>
-                        </c:if>
-                    </td>
+                    <c:if test="${IsAdmin||IsTeacher}">
+                        <th>编辑课件</th>
+                    </c:if>
                 </tr>
-            </c:forEach>
-        </table>
+
+                <c:forEach var="course" items="${courses}">
+
+                    <tr>
+                        <td>${course.id}
+                        </td>
+                        <td>${course.name}
+                        </td>
+                        <td>${course.teacher_name}
+                        </td>
+                        <td>
+                            <c:if test="${IsStudent}">
+                                <form action="${pageContext.request.contextPath}/Chapter" method="get">
+                                    <input type="hidden" name="courseId" value="${course.id}">
+                                    <button class="course-button" type="submit">查看
+                                    </button>
+                                </form>
+                            </c:if>
+
+                            <c:if test="${IsAdmin||IsTeacher}">
+                                <form action="${pageContext.request.contextPath}/Chapter" method="get">
+                                    <input type="hidden" name="courseId" value="${course.id}">
+                                    <button class="course-button" type="submit">编辑
+                                    </button>
+                                </form>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
     </div>
-    </c:if>
+</c:if>
 
-    <c:if test="${empty courses}">
+<c:if test="${empty courses}">
     <p>暂无课程</p>
-    </c:if>
+</c:if>
 
+
+<c:if test="${IsStudent}">
     <a class="back-button" href="${pageContext.request.contextPath}/main_stu">返回主界面</a>
     <a href="${ pageContext.request.contextPath }/logout_stu" class="logout-button">退出登录</a>
+</c:if>
+
+<c:if test="${IsAdmin}">
+    <a class="back-button" href="${pageContext.request.contextPath}/main_admin">返回主界面</a>
+    <a href="${ pageContext.request.contextPath }/logout_admin" class="logout-button">退出登录</a>
+</c:if>
+
+<c:if test="${IsTeacher}">
+    <a class="back-button" href="${pageContext.request.contextPath}/main_teacher">返回主界面</a>
+    <a href="${ pageContext.request.contextPath }/logout_teacher" class="logout-button">退出登录</a>
+</c:if>
 </body>
 </html>
