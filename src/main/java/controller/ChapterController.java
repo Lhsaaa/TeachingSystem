@@ -1,6 +1,7 @@
 package controller;
 
 import com.mysql.cj.util.DnsSrv;
+import com.mysql.cj.util.StringInspector;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,6 +15,7 @@ import pojo.Chapter;
 import pojo.Course;
 
 import javax.servlet.http.HttpSession;
+import java.beans.Introspector;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -31,7 +33,7 @@ public class ChapterController {
     }
 
     @RequestMapping("/toCourseToChapter")
-    public String toChapter(HttpSession session) {
+    public String toCourseToChapter(HttpSession session) {
         loadCourse(session);
         return "CourseToChapter";
     }
@@ -52,8 +54,8 @@ public class ChapterController {
         session.setAttribute("courses", courses);
     }
 
-    @GetMapping("/Chapter")
-    public String Chapter(@RequestParam("courseId") String courseId, HttpSession session) {
+    @GetMapping("/loadChapter")
+    public void loadChapter(String courseId, HttpSession session) {
 
         int CourseId = Integer.parseInt(courseId);
         List<Chapter> chapters;
@@ -67,12 +69,29 @@ public class ChapterController {
             session.setAttribute("chapters", chapters);
             session.setAttribute("course", course);
         }
-
-        return "redirect:toChapter"; //重定向回章节列表
     }
 
     @RequestMapping("/toChapter")
-    public String toChapter() {
+    public String toChapter(@RequestParam("courseId") String courseId, HttpSession session) {
+        loadChapter(courseId, session);
+
+        return "Chapter";
+    }
+
+
+    @RequestMapping("/AddChapter")
+    public String AddChapter(@RequestParam("chapterId") String id, @RequestParam("chapterTitle") String title,
+                             @RequestParam("CourseId") String CourseId, HttpSession session) {
+        int chapter_id = Integer.parseInt(id);
+        int course_id = Integer.parseInt(CourseId);
+
+        Chapter chapter = new Chapter(chapter_id, course_id, title);
+
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            sqlSession.update("mapper.ChapterMapper.AddChapter", chapter);
+            sqlSession.commit();
+        }
+        loadChapter(CourseId, session);
         return "Chapter";
     }
 

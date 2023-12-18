@@ -202,7 +202,7 @@
                 </td>
                 <td>
                     <form action="${pageContext.request.contextPath}/toMaterial" method="post">
-                        <input type="hidden" name="chapterId" value="${chapter.id}">
+                        <input type="hidden" name="chapterId" value="${chapter.chapter_id}">
                         <button type="submit" name="editButton">查看</button>
                     </form>
                 </td>
@@ -213,6 +213,17 @@
 
 
 <c:if test="${IsTeacher}">
+
+    <h2 style="color: #FFFFFF;font-family:Microsoft YaHei, sans-serif;font-weight: 300">添加章节</h2>
+    <div class="button-container">
+        <form action="${pageContext.request.contextPath}/AddChapter" method="post">
+            <textarea type="text" name="chapterId" rows="1" cols="75" placeholder="章节ID"></textarea>
+            <textarea type="text" name="chapterTitle" rows="1" cols="75" placeholder="章节标题"></textarea>
+            <input type="hidden" name="CourseId" value="${course.id}">
+            <input type="submit" value="添加章节">
+        </form>
+    </div>
+
     <a class="back-button" href="${pageContext.request.contextPath}/main_teacher">返回主界面</a>
     <a href="${ pageContext.request.contextPath }/logout_teacher" class="logout-button">退出登录</a>
 </c:if>

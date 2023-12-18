@@ -3,10 +3,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="mapper.MaterialMapper">
+
+    <!--    加载课件列表-->
     <select id="loadMaterial" parameterType="int" resultType="Material">
         select *
         from coursematerials
         where chapter_id = #{chapterId};
     </select>
+
+
+    <!--    上传课件-->
+    <insert id="Upload" parameterType="Material">
+        insert into coursematerials(chapter_id, material_title, file_path)
+        values (#{chapter_id}, #{material_title}, #{file_path});
+    </insert>
+
+    <!--    删除课件-->
+    <delete id="Delete" parameterType="int">
+        delete
+        from coursematerials
+        where material_id = #{id};
+    </delete>
 
 </mapper>

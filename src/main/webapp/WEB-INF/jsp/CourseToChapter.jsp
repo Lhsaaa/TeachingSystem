@@ -173,7 +173,7 @@
                         </td>
                         <td>
                             <c:if test="${IsStudent}">
-                                <form action="${pageContext.request.contextPath}/Chapter" method="get">
+                                <form action="${pageContext.request.contextPath}/toChapter" method="get">
                                     <input type="hidden" name="courseId" value="${course.id}">
                                     <button class="course-button" type="submit">查看
                                     </button>
@@ -181,7 +181,7 @@
                             </c:if>
 
                             <c:if test="${IsAdmin||IsTeacher}">
-                                <form action="${pageContext.request.contextPath}/Chapter" method="get">
+                                <form action="${pageContext.request.contextPath}/toChapter" method="get">
                                     <input type="hidden" name="courseId" value="${course.id}">
                                     <button class="course-button" type="submit">编辑
                                     </button>

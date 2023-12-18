@@ -3,7 +3,18 @@ package pojo;
 public class Chapter {
 
     private int chapter_id, course_id;
-    private String chapter_title,course;
+    private String chapter_title, course;
+
+    public Chapter() {
+
+    }
+
+    public Chapter(int chapter_id, int course_id, String chapter_title) {
+        this.chapter_id = chapter_id;
+        this.course_id = course_id;
+        this.chapter_title = chapter_title;
+    }
+
 
     public void setChapter_id(int chapter_id) {
         this.chapter_id = chapter_id;

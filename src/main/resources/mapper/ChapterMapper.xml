@@ -52,4 +52,10 @@
         where chapter_id = #{chapterId};
     </select>
 
+    <!--    新增章节-->
+    <insert id="AddChapter" parameterType="Chapter">
+        insert into chapters
+        values (#{chapter_id}, #{course_id}, #{chapter_title});
+    </insert>
+
 </mapper>

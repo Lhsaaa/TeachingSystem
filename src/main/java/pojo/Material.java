@@ -5,7 +5,17 @@ import java.sql.Timestamp;
 public class Material {
     private int material_id, chapter_id;
     private String material_title, file_path;
-    private Timestamp upload_time;
+    private Timestamp upload_date;
+
+
+    public Material() {
+    }
+
+    public Material(int chapter_id, String material_title, String file_path) {
+        this.chapter_id = chapter_id;
+        this.material_title = material_title;
+        this.file_path = file_path;
+    }
 
     public int getMaterial_id() {
         return material_id;
@@ -15,8 +25,8 @@ public class Material {
         return chapter_id;
     }
 
-    public Timestamp getUpload_time() {
-        return upload_time;
+    public Timestamp getUpload_date() {
+        return upload_date;
     }
 
     public String getFile_path() {
@@ -44,7 +54,7 @@ public class Material {
         this.file_path = file_path;
     }
 
-    public void setUpload_time(Timestamp upload_time) {
-        this.upload_time = upload_time;
+    public void setUpload_date(Timestamp upload_date) {
+        this.upload_date = upload_date;
     }
 }
