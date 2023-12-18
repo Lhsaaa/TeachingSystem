@@ -6,7 +6,8 @@
 
     <!--    注册新用户-->
     <insert id="Register_admin" parameterType="Admin">
-        insert into admins values (#{admin_ID}, #{admin_name}, #{admin_pwd});
+        insert into admins
+        values (#{admin_ID}, #{admin_name}, #{admin_pwd});
     </insert>
 
     <!--查找是否有登录的该用户 -->
@@ -22,5 +23,25 @@
         from students
         where #{message.getStu_id())} = stu_ID;
     </select>
+
+    <!--    加载所有学生-->
+    <select id="loadAllStudent" resultType="Student">
+        select *
+        from students;
+    </select>
+
+    <!--    封禁学生-->
+    <update id="ban" parameterType="String">
+        update students
+        set banned = 1
+        where stu_ID = #{studentID};
+    </update>
+
+    <!--    解禁学生-->
+    <update id="unban" parameterType="String">
+        update students
+        set banned = 0
+        where stu_ID = #{studentID};
+    </update>
 
 </mapper>

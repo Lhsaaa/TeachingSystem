@@ -58,4 +58,11 @@
         values (#{chapter_id}, #{course_id}, #{chapter_title});
     </insert>
 
+    <!--    查找课程名-->
+    <select id="selectCourseName" parameterType="int" resultType="String">
+        select name
+        from courses
+        where id = #{courseId};
+    </select>
+
 </mapper>

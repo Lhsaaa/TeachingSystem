@@ -212,7 +212,7 @@
         <a href="${pageContext.request.contextPath}/toMessage_stu" class="model-button">去往留言板</a>
         <a href="${pageContext.request.contextPath}/toCourse" class="model-button">查看课程介绍</a>
         <a href="${pageContext.request.contextPath}/toCourseToChapter" class="model-button">分章节查看课件</a>
-<%--        <a href="Question.jsp" class="model-button">模拟答题</a>--%>
+        <a href="${pageContext.request.contextPath}/toTest" class="model-button">模拟答题</a>
     </div>
 </div>
 

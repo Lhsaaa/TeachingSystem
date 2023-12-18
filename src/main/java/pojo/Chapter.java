@@ -3,7 +3,7 @@ package pojo;
 public class Chapter {
 
     private int chapter_id, course_id;
-    private String chapter_title, course;
+    private String chapter_title, course_name;
 
     public Chapter() {
 
@@ -28,6 +28,14 @@ public class Chapter {
         this.chapter_title = chapter_title;
     }
 
+    public void setCourse_name(String course_name) {
+        this.course_name = course_name;
+    }
+
+
+    public String getCourse_name() {
+        return course_name;
+    }
 
     public int getChapter_id() {
         return chapter_id;

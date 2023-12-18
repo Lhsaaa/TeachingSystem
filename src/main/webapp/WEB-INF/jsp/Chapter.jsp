@@ -203,6 +203,7 @@
                 <td>
                     <form action="${pageContext.request.contextPath}/toMaterial" method="post">
                         <input type="hidden" name="chapterId" value="${chapter.chapter_id}">
+                        <input type="hidden" name = "CourseId" value=${course.id}>
                         <button type="submit" name="editButton">查看</button>
                     </form>
                 </td>

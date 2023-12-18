@@ -7,11 +7,14 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pojo.Admin;
+import pojo.Student;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -69,6 +72,45 @@ public class AdminController {
             return "AdminMain";
         }
         return "AdminLogin";
+    }
+
+
+    public void loadAll(HttpSession session) {
+        List<Student> students;
+
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            students = sqlSession.selectList("mapper.AdminMapper.loadAllStudent");
+        }
+
+        session.setAttribute("students", students);
+    }
+
+    @RequestMapping("/toManageInfo")
+    public String toManageInfo(HttpSession session) {
+        loadAll(session);
+        return "InfoManage";
+    }
+
+    //    封禁用户
+    @RequestMapping("/Ban")
+    public String ban(HttpSession session, @RequestParam("studentId") String studentID) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            sqlSession.update("mapper.AdminMapper.ban", studentID);
+            sqlSession.commit();
+        }
+        loadAll(session);
+        return "InfoManage";
+    }
+
+    //解禁学生
+    @RequestMapping("/UnBan")
+    public String Unban(HttpSession session, @RequestParam("studentId") String studentID) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            sqlSession.update("mapper.AdminMapper.unban", studentID);
+            sqlSession.commit();
+        }
+        loadAll(session);
+        return "InfoManage";
     }
 
     //用户退出

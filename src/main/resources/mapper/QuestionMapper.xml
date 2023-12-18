@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="mapper.QuestionMapper">
+
+    <!--    加载问题-->
+    <select id="loadQuestion" resultType="Question">
+        select *
+        from questions;
+    </select>
+
+    <!--    删除问题-->
+    <delete id="delete" parameterType="int">
+        delete
+        from questions
+        where id = #{id};
+    </delete>
+
+    <!--    添加问题-->
+    <insert id="add" parameterType="Question">
+        insert into questions(question_text, option_a, option_b, option_c, option_d, correct_answer)
+        values (#{question_text}, #{option_a},#{option_b}, #{option_c},#{option_d},#{correct_answer})
+    </insert>
+</mapper>

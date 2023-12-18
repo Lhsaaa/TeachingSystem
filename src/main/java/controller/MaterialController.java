@@ -42,18 +42,21 @@ public class MaterialController {
     }
 
     @RequestMapping("/toMaterial")
-    public String toMaterial(@RequestParam("chapterId") int chapterId, HttpSession session) {
-        loadMaterial(chapterId, session);
+    public String toMaterial(@RequestParam("chapterId") int chapterId,
+                             @RequestParam("CourseId") int CourseId, HttpSession session) {
+        loadMaterial(chapterId, session, CourseId);
         return "Material";
     }
 
     @RequestMapping("/loadMaterial")
-    public void loadMaterial(int chapterId, HttpSession session) {
+    public void loadMaterial(int chapterId, HttpSession session, int courseId) {
         List<Material> materials;
         Chapter chapter;
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             materials = sqlSession.selectList("mapper.MaterialMapper.loadMaterial", chapterId);
             chapter = sqlSession.selectOne("mapper.ChapterMapper.FindChapterByChapterId", chapterId);
+            String name = sqlSession.selectOne("mapper.ChapterMapper.selectCourseName", courseId);
+            chapter.setCourse_name(name);
         }
         session.setAttribute("chapter", chapter);
         session.setAttribute("materials", materials);
@@ -62,7 +65,8 @@ public class MaterialController {
 
     @PostMapping("/uploadMaterial")
     public String handleMaterialUpload(@RequestParam("title") String title, MultipartFile file,
-                                       @RequestParam("chapterId") String chapterId, HttpServletRequest request,
+                                       @RequestParam("chapterId") String chapterId,
+                                       @RequestParam("CourseId") int CourseId, HttpServletRequest request,
                                        HttpSession session) throws Exception {
 
         // 获取章节ID
@@ -89,7 +93,7 @@ public class MaterialController {
             sqlSession.commit();
         }
 
-        loadMaterial(id, session);
+        loadMaterial(id, session, CourseId);
         return "Material";
     }
 
@@ -109,13 +113,14 @@ public class MaterialController {
     }
 
     @RequestMapping("/delete")
-    public String delete(@RequestParam("id") int id, @RequestParam("chapterId") int chapterId, HttpSession session) {
+    public String delete(@RequestParam("id") int id, @RequestParam("chapterId") int chapterId,
+                         @RequestParam("CourseId") int CourseId, HttpSession session) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             sqlSession.delete("mapper.MaterialMapper.Delete", id);
             sqlSession.commit();
         }
 
-        loadMaterial(chapterId, session);
+        loadMaterial(chapterId, session, CourseId);
         return "Material";
     }
 

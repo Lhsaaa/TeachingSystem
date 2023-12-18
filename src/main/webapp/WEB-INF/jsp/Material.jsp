@@ -177,6 +177,57 @@
             background-color: #2980b9; /* 悬停时的背景颜色 */
         }
 
+
+        /* 上传课件容器样式 */
+        .upload-container {
+            margin: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-title {
+            font-size: 24px;
+            font-family: "微软雅黑", sans-serif;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+
+        .upload-label {
+            font-size: 18px;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
+        }
+
+        .upload-input {
+            font-size: 16px;
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .upload-button {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-family: "微软雅黑", sans-serif;
+        }
+
+        .upload-button:hover {
+            background-color: #2980b9;
+        }
+
+
     </style>
 
     <script>
@@ -192,10 +243,20 @@
 
 
 <body>
-<h1 class="Page_title">编辑章节</h1>
+<c:if test="${IsTeacher}">
+    <h1 class="Page_title">编辑章节 <${chapter.chapter_title}></h1>
+</c:if>
+
+<c:if test="${IsAdmin}">
+    <h1 class="Page_title">编辑章节 <${chapter.chapter_title}></h1>
+</c:if>
+
+<c:if test="${IsStudent}">
+    <h1 class="Page_title">查看章节 <${chapter.chapter_title}></h1>
+</c:if>
 
 
-<h1>所属课程: ${chapter.course_id}
+<h1>所属课程: ${chapter.course_name}
 </h1>
 <br>
 <br>
@@ -216,7 +277,9 @@
             <td>上传时间</td>
             <td>课件标题</td>
             <td>查看</td>
-            <td>删除</td>
+            <c:if test="${IsTeacher}">
+                <td>删除</td>
+            </c:if>
         </tr>
         <c:forEach var="material" items="${materials}">
             <tr>
@@ -232,39 +295,46 @@
                             onclick="openNewPage('${material.file_path}')">查看
                     </button>
                 </td>
-                <td>
-                    <form action="${pageContext.request.contextPath}/delete" method="post">
-                        <input hidden name="id" value=${material.material_id}>
-                        <input type="hidden" name="chapterId" value=${chapter.chapter_id}>
-                        <button type="submit" class="material-button delete-button">删除
-                        </button>
-                    </form>
-                </td>
+                <c:if test="${IsAdmin||IsTeacher}">
+                    <td>
+                        <form action="${pageContext.request.contextPath}/delete" method="post">
+                            <input hidden name="id" value=${material.material_id}>
+                            <input type="hidden" name="chapterId" value=${chapter.chapter_id}>
+                            <input type="hidden" name="CourseId" value=${chapter.course_id}>
+                            <button type="submit" class="material-button delete-button">删除
+                            </button>
+                        </form>
+                    </td>
+                </c:if>
             </tr>
         </c:forEach>
     </table>
 </c:if>
 
-<!-- 添加上传课件表单 -->
-<h2 style="color: #FFFFFF; font-family: 'Microsoft YaHei', sans-serif; font-weight: 300">上传课件</h2>
-<div class=" ">
 
-    <form action="${pageContext.request.contextPath}/uploadMaterial" method="post" enctype="multipart/form-data">
-        <label> 课件标题
-            <input type="text" name="title" size="100" placeholder="课件标题">
-        </label>
-        <label>上传文件:</label>
-        <input type="file" name="file">
-        <input type="hidden" name="chapterId" value="${chapter.chapter_id}">
-        <input type="submit" value="上传">
-    </form>
-
-</div>
-
+<c:if test="${IsAdmin||IsTeacher}">
+    <!-- 添加上传课件表单 -->
+    <div class="upload-container">
+        <h2 class="upload-title">上传课件</h2>
+        <form action="${pageContext.request.contextPath}/uploadMaterial" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title" class="upload-label">课件标题:</label>
+                <input type="text" name="title" id="title" class="upload-input" placeholder="请输入课件标题" required>
+            </div>
+            <div class="form-group">
+                <label for="file" class="upload-label">上传文件:</label>
+                <input type="file" name="file" id="file" class="upload-input" required>
+            </div>
+            <input type="hidden" name="chapterId" value="${chapter.chapter_id}">
+            <input type="hidden" name="CourseId" value=${chapter.course_id}>
+            <input type="submit" value="上传" class="upload-button">
+        </form>
+    </div>
+</c:if>
 
 <c:if test="${IsTeacher}">
     <a class="back-button" href="${pageContext.request.contextPath}/main_teacher">返回主界面</a>
-    <a href="${ pageContext.request.contextPath }/logout_teacher" class="logout-button">退出登录</a>
+    <a href="${pageContext.request.contextPath }/logout_teacher" class="logout-button">退出登录</a>
 </c:if>
 
 

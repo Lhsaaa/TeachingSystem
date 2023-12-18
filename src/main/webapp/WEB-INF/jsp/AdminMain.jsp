@@ -192,8 +192,7 @@
     <div class="link-container">
         <a href="${pageContext.request.contextPath}/toMessage_admin" class="model-button">去往留言板</a>
         <a href="${pageContext.request.contextPath}/toCourse_admin" class="model-button">查看课程介绍</a>
-        <a href="${pageContext.request.contextPath}/toCourseToChapter" class="model-button">分章节查看课件</a>
-        <%--        <a href="Question.jsp" class="model-button">模拟答题</a>--%>
+        <a href="${pageContext.request.contextPath}/toManageInfo" class="model-button">学生信息管理</a>
     </div>
 </div>
 

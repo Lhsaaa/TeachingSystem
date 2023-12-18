@@ -2,7 +2,7 @@ package pojo;
 
 public class Student {
     private String stu_ID, stu_name, stu_pwd, major, stu_class, mail;
-    private Boolean banned = false;
+    private int banned = 0;
 
 
     public void setID(String ID) {
@@ -25,7 +25,7 @@ public class Student {
         this.stu_class = stu_class;
     }
 
-    public void setBanned(Boolean banned) {
+    public void setBanned(int banned) {
         this.banned = banned;
     }
 
@@ -46,7 +46,7 @@ public class Student {
         return stu_name;
     }
 
-    public Boolean getBanned() {
+    public int getBanned() {
         return banned;
     }
 

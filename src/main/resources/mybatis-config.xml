@@ -28,6 +28,7 @@
         <mapper resource="mapper/CourseMapper.xml"/>
         <mapper resource="mapper/ChapterMapper.xml"/>
         <mapper resource="mapper/MaterialMapper.xml"/>
+        <mapper resource="mapper/QuestionMapper.xml"/>
     </mappers>
 
 </configuration>
