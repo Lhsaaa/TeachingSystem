@@ -19,7 +19,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
+            background-color: #85C1E9;
             margin: 0;
             padding: 0;
         }
@@ -151,10 +151,12 @@
                 <label><input type="radio" name="question_${question.id}" value="B"> B. ${question.option_b}</label>
                 <label><input type="radio" name="question_${question.id}" value="C"> C. ${question.option_c}</label>
                 <label><input type="radio" name="question_${question.id}" value="D"> D. ${question.option_d}</label>
+                <!-- 隐藏正确答案，通过 JavaScript 显示 -->
+                <label class="correct-answer" id="correct_answer_${question.id}" style="display: none;">正确答案：${question.correct_answer}</label>
             </fieldset>
         </c:forEach>
-        <!-- 提交按钮 -->
-        <input type="submit" value="提交答案">
+
+        <input type="submit" value="提交答案" class="submit-button">
     </form>
 </c:if>
 
@@ -177,8 +179,7 @@
         </c:forEach>
 
         <!-- 显示正确率 -->
-        <p>共 ${totalQuestions} 题，正确答案数： ${correctCount}
-            题，正确率为 ${((correctCount / totalQuestions) * 100).toFixed(2)}% </p>
+        <p style="margin-top: 20px;">共 ${totalQuestions} 题，正确答案数： ${correctCount}题，正确率为 <span style="color: red;">${((correctCount / totalQuestions) * 100).toFixed(2)}%</span></p>
     </c:if>
 </c:if>
 
@@ -208,6 +209,10 @@
             if (selectedAnswer === correctAnswer) {
                 correctCount++;
             }
+
+            // 显示正确答案
+            var correctAnswerLabel = document.getElementById('correct_answer_' + questionId);
+            correctAnswerLabel.style.display = 'block';
         });
 
         // 计算正确率
@@ -219,11 +224,13 @@
 
         // 显示正确率
         var accuracyDisplay = document.createElement('p');
-        accuracyDisplay.innerHTML = "正确率为 " + accuracy.toFixed(2) + "%";
+        accuracyDisplay.innerHTML = "答题结果：\n共 " + totalQuestions + " 题，正确答案数：" + correctCount + " 题，正确率为 <span style='color: red;'>" + accuracy.toFixed(2) + "%</span>";
         document.body.appendChild(accuracyDisplay);
     }
 </script>
 </body>
+
+
 
 
 </html>
