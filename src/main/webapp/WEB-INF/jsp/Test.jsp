@@ -152,7 +152,8 @@
                 <label><input type="radio" name="question_${question.id}" value="C"> C. ${question.option_c}</label>
                 <label><input type="radio" name="question_${question.id}" value="D"> D. ${question.option_d}</label>
                 <!-- 隐藏正确答案，通过 JavaScript 显示 -->
-                <label class="correct-answer" id="correct_answer_${question.id}" style="display: none;">正确答案：${question.correct_answer}</label>
+                <label class="correct-answer" id="correct_answer_${question.id}"
+                       style="display: none;">正确答案：${question.correct_answer}</label>
             </fieldset>
         </c:forEach>
 
@@ -179,7 +180,8 @@
         </c:forEach>
 
         <!-- 显示正确率 -->
-        <p style="margin-top: 20px;">共 ${totalQuestions} 题，正确答案数： ${correctCount}题，正确率为 <span style="color: red;">${((correctCount / totalQuestions) * 100).toFixed(2)}%</span></p>
+        <p style="margin-top: 20px;">共 ${totalQuestions} 题，正确答案数： ${correctCount}题，正确率为 <span
+                style="color: red;">${((correctCount / totalQuestions) * 100).toFixed(2)}%</span></p>
     </c:if>
 </c:if>
 
