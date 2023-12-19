@@ -139,8 +139,8 @@
                 <c:if test="${student.banned == 1}">被封禁</c:if>
             </td>
             <td>
-                <form action="${pageContext.request.contextPath}/" method="post">
-                    <input type="hidden" name="studentId" value="${student.ID}">
+                <form action="${pageContext.request.contextPath}/toEditStudent" method="post">
+                    <input type="hidden" name="stu_ID" value="${student.ID}">
                     <button class="edit-button" type="submit">编辑</button>
                 </form>
             </td>

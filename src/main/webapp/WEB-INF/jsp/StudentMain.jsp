@@ -217,12 +217,11 @@
 </div>
 
 
-<%--<div class="edit-button-container">--%>
-<%--    <form action="edit_stu.jsp" method="post">--%>
-<%--        <input type="hidden" name="studentId" value="<%= request.getSession().getAttribute("stu_ID") %>">--%>
-<%--        <button type="submit" class="edit-button">修改个人信息</button>--%>
-<%--    </form>--%>
-<%--</div>--%>
+<div class="edit-button-container">
+    <form action="${pageContext.request.contextPath}/toEditInfo" method="post">
+        <button type="submit" class="edit-button">修改个人信息</button>
+    </form>
+</div>
 
 <a href="${ pageContext.request.contextPath }/logout_stu" class="logout-button">退出登录</a>
 

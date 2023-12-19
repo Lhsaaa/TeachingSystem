@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pojo.Admin;
 import pojo.Student;
+import sun.security.timestamp.HttpTimestamper;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -121,6 +122,33 @@ public class AdminController {
 
         // 退出登录后重定向到登录页面
         return "redirect:tologin_admin";
+    }
+
+
+    //    编辑学生信息
+    @RequestMapping("/toEditStudent")
+    public String toEditStudent(@RequestParam("stu_ID") String stu_ID, HttpSession session) {
+
+        Student student;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            student = sqlSession.selectOne("mapper.StudentMapper.findUserByID", stu_ID);
+        }
+
+        session.setAttribute("student", student);
+
+        return "EditStudentInfo";
+
+    }
+
+
+    @RequestMapping("/UpdateStudent_admin")
+    public String  UpdateStudent(Student student,HttpSession session) {
+
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            sqlSession.update("mapper.StudentMapper.UpdateStudent", student);
+            sqlSession.commit();
+        }
+        return "redirect:/toManageInfo";
     }
 
 }

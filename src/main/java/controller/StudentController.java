@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pojo.Message;
 import pojo.Student;
 import pojo.Teacher;
+import sun.security.timestamp.HttpTimestamper;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -76,7 +77,7 @@ public class StudentController {
                     return "StudentLogin";
                 } else if (u.getID().equals(ID) && u.getPassword().equals(Password)) {
                     session.setAttribute("user", u);
-                    session.setAttribute("IsStudent",true);
+                    session.setAttribute("IsStudent", true);
                     //用户登录成功，转发到系统首页
                     return "StudentMain";
                 }
@@ -155,7 +156,27 @@ public class StudentController {
         return "StudentBoard";
     }
 
+    @RequestMapping("/toEditInfo")
+    public String toEditInfo(HttpSession session) {
+        Student student = (Student) session.getAttribute("user");
 
+        return "EditInfo";
+    }
+
+    @RequestMapping("/UpdateStudent")
+    public String  UpdateStudent(Student student,HttpSession session) {
+
+        System.out.println(student.getMajor());
+        System.out.println(student.getID());
+
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            sqlSession.update("mapper.StudentMapper.UpdateStudent", student);
+            sqlSession.commit();
+        }
+
+        session.invalidate();
+        return "redirect:login_stu";
+    }
 
 
 }

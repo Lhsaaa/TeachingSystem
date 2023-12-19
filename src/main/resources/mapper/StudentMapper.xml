@@ -6,7 +6,8 @@
 
     <!--    注册新用户-->
     <insert id="Register_stu" parameterType="Student">
-        insert into students values (#{stu_ID}, #{stu_name}, #{stu_pwd}, #{major}, #{stu_class}, #{mail}, #{banned});
+        insert into students
+        values (#{stu_ID}, #{stu_name}, #{stu_pwd}, #{major}, #{stu_class}, #{mail}, #{banned});
     </insert>
 
     <!--查找是否有登录的该用户 -->
@@ -22,5 +23,15 @@
         from students
         where #{message.getStu_id())} = stu_ID;
     </select>
+    <!--    修改个人信息-->
+    <update id="UpdateStudent" parameterType="Student">
+        update students
+        set stu_name  = #{stu_name},
+            stu_pwd   = #{stu_pwd},
+            major     = #{major},
+            stu_class = #{stu_class},
+            mail      = #{mail}
+        where stu_ID = #{stu_ID};
+    </update>
 
 </mapper>
