@@ -180,13 +180,6 @@
 
 </head>
 
-<%--<script>--%>
-<%--    function submitForm() {--%>
-<%--        var content = document.getElementById("content").value;--%>
-<%--        sessionStorage.setItem("content", content);--%>
-<%--        document.forms["AddMessage"].submit();--%>
-<%--    }--%>
-<%--</script>--%>
 
 <body>
 

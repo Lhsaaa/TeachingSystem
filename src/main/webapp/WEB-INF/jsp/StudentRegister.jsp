@@ -76,7 +76,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url("image/09.jpg") no-repeat;
+            background: url("images/09.jpg") no-repeat;
             background-size: cover;
         }
 
@@ -119,14 +119,7 @@
             font-family: "微软雅黑", sans-serif; /* 使用微软雅黑字体 */
         }
     </style>
-    <script>
-        // 注册失败时触发弹窗
-        <% if (session.getAttribute("registrationSuccess") != null && !(Boolean) session.getAttribute("registrationSuccess")) { %>
-        alert("注册失败，请重试!");
-        <% } %>
-        // 清除 session 中的属性
-        <% session.removeAttribute("registrationSuccess"); %>
-    </script>
+
 </head>
 <body>
 <div class="box">
@@ -171,5 +164,20 @@
         </div>
     </form>
 </div>
+
+
+<script>
+    // 在页面加载完毕后执行的 JavaScript
+    window.onload = function () {
+
+        var success = "${register_success}";
+
+        // 检查是否有封禁信息，如果有则弹出提示
+        if (success.length > 0) {
+            alert(success);
+        }
+    };
+</script>
+
 </body>
 </html>

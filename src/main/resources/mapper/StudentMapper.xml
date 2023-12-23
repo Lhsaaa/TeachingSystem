@@ -7,7 +7,7 @@
     <!--    注册新用户-->
     <insert id="Register_stu" parameterType="Student">
         insert into students
-        values (#{stu_ID}, #{stu_name}, #{stu_pwd}, #{major}, #{stu_class}, #{mail}, #{banned});
+        values (#{stu_ID}, #{stu_name}, #{stu_pwd}, #{major}, #{stu_class}, #{mail}, 0);
     </insert>
 
     <!--查找是否有登录的该用户 -->

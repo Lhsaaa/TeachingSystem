@@ -172,6 +172,42 @@
         }
 
 
+        /* 将添加留言的文本框设置为透明的 */
+        .button-container textarea {
+            background-color: rgba(0, 0, 0, 0.1); /* 使用 rgba 颜色表示透明背景 */
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            width: 50%;
+
+            font-family: "Arial", sans-serif; /* 设置字体样式 */
+            font-size: 20px; /* 设置字体大小 */
+        }
+
+        /* 鼠标移入文本域时改变边框颜色 */
+        .button-container textarea:hover {
+            border-color: #2980b9; /* 鼠标移入时的边框颜色 */
+        }
+
+
+        /* 修改注册按钮的样式 */
+        .button-container input[type="submit"] {
+            background-color: #3498db; /* 修改按钮背景颜色 */
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px; /* 添加圆角边框 */
+            transition: background-color 0.3s ease; /* 添加过渡效果 */
+        }
+
+        /* 鼠标悬停时的样式 */
+        .button-container input[type="submit"]:hover {
+            background-color: #2980b9; /* 悬停时的背景颜色 */
+        }
+
+
     </style>
 </head>
 <body>
@@ -203,7 +239,7 @@
                 <td>
                     <form action="${pageContext.request.contextPath}/toMaterial" method="post">
                         <input type="hidden" name="chapterId" value="${chapter.chapter_id}">
-                        <input type="hidden" name = "CourseId" value=${course.id}>
+                        <input type="hidden" name="CourseId" value=${course.id}>
                         <button type="submit" name="editButton">查看</button>
                     </form>
                 </td>
@@ -218,8 +254,11 @@
     <h2 style="color: #FFFFFF;font-family:Microsoft YaHei, sans-serif;font-weight: 300">添加章节</h2>
     <div class="button-container">
         <form action="${pageContext.request.contextPath}/AddChapter" method="post">
-            <textarea type="text" name="chapterId" rows="1" cols="75" placeholder="章节ID"></textarea>
-            <textarea type="text" name="chapterTitle" rows="1" cols="75" placeholder="章节标题"></textarea>
+            <textarea type="text" name="chapterId" rows="1" cols="75" placeholder="章节ID"
+                      style="overflow: hidden;"></textarea>
+            <textarea type="text" name="chapterTitle" rows="1" cols="75" placeholder="章节标题"
+                      style="overflow: hidden;"></textarea>
+
             <input type="hidden" name="CourseId" value="${course.id}">
             <input type="submit" value="添加章节">
         </form>

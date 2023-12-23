@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class StudentController {
@@ -54,6 +55,7 @@ public class StudentController {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             sqlSession.insert("mapper.StudentMapper.Register_stu", stu);
             sqlSession.commit();
+            model.addAttribute("register_success","注册成功正在前往登录");
         }
         return "redirect:/tologin_stu";
 
@@ -73,13 +75,20 @@ public class StudentController {
 
                 if (u == null) {
                     //如果用户名和密码不匹配，转发到登录页面，并进行提醒
-                    model.addAttribute("msg", "用户名或密码错误，请重新登录！");
+                    model.addAttribute("msg", "该用户不存在！");
                     return "StudentLogin";
                 } else if (u.getID().equals(ID) && u.getPassword().equals(Password)) {
+                    if (u.getBanned() == 1) {
+                        model.addAttribute("banMsg", "该用户已被封禁，请联系管理员");
+                        return "StudentLogin";
+                    }
                     session.setAttribute("user", u);
                     session.setAttribute("IsStudent", true);
                     //用户登录成功，转发到系统首页
                     return "StudentMain";
+                }else if(u.getID().equals(ID) && (!Objects.equals(u.getPassword(), Password))){
+                    model.addAttribute("msg", "密码错误，请重试！");
+                    return "StudentLogin";
                 }
             }
         }
@@ -164,7 +173,7 @@ public class StudentController {
     }
 
     @RequestMapping("/UpdateStudent")
-    public String  UpdateStudent(Student student,HttpSession session) {
+    public String UpdateStudent(Student student, HttpSession session) {
 
         System.out.println(student.getMajor());
         System.out.println(student.getID());

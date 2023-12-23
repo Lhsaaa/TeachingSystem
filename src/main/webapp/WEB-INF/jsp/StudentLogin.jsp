@@ -147,13 +147,11 @@
         return true;
     }
 </script>
-
-
 <body>
 <div class="box">
     <h1>学生登录</h1>
     <br/>
-    <form action="${pageContext.request.contextPath }/login_stu" method="POST">
+    <form action="${pageContext.request.contextPath}/login_stu" method="POST">
         <div>${msg}</div>
         <div class="input-box">
             <label style="font-size: 25px">账号:</label>
@@ -174,6 +172,26 @@
     </button>
 </div>
 <br><a style="font-size: 25px" href="${pageContext.request.contextPath}/backToWelcome">返回欢迎界面</a>
+
+<script>
+    // 在页面加载完毕后执行的 JavaScript
+    window.onload = function () {
+        // 获取后端返回的封禁信息
+        var banMsg = "${banMsg}";
+
+        var Msg = "${msg}";
+
+        // 检查是否有封禁信息，如果有则弹出提示
+        if (banMsg.length > 0) {
+            alert(banMsg);
+        }
+
+        if (Msg.length > 0) {
+            alert(Msg);
+        }
+    };
+</script>
 </body>
+
 
 </html>
